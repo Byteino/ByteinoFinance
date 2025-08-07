@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "Id": 0,
+    "Amount": 100,
+    "Type": "Income",
+    "Category": "Test",
+    "Description": null,
+    "Date": "2025-08-07T11:43:00.3342991+03:30"
+  }
+]

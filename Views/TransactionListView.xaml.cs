@@ -37,8 +37,14 @@ namespace ByteinoFinance.Views
                 TransactionService.SaveTransactions(vm.Transactions);
             };
 
-            var addView = new AddTransactionView(addVm); 
-            addView.Owner = Window.GetWindow(this);
+            var addView = new AddTransactionView(addVm);
+
+            var ownerWindow = Window.GetWindow(this);
+            if (ownerWindow is MainWindow mainWindow)
+            {
+                addView.Owner = mainWindow;
+            }
+
             addView.ShowDialog();
 
         }
