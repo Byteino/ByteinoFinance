@@ -16,52 +16,43 @@ namespace ByteinoFinance.ViewModels
     {
         public ObservableCollection<Transaction> Transactions { get; set; }
 
-        [ObservableProperty]
-        private decimal totalIncome;
+        public ICommand DeleteTransactionCommand { get; }
 
-        [ObservableProperty]
-        private decimal totalExpense;
-
+        public decimal TotalIncome { get; private set; }
+        public decimal TotalExpense { get; private set; }
 
 
-        public TransactionListViewModel()
+        public Action OnListChanged { get; set; }
+
+        public TransactionListViewModel(ObservableCollection<Transaction> transactions)
         {
-            Transactions = TransactionService.LoadTransactions();
-            Transactions.Add(new Transaction
-            {
-                Amount = 100,
-                Type = "Income",
-                Category = "Test",
-                Date = DateTime.Now
-            });
+            Transactions = transactions;
+            DeleteTransactionCommand = new RelayCommand<Transaction>(DeleteTransaction);
+
             CalculateTotals();
         }
 
-
-
-        public ICommand DeleteTransactionCommand => new RelayCommand<Transaction>(DeleteTransaction);
-
-
         private void DeleteTransaction(Transaction transaction)
         {
-            if (transaction != null)
+            if (transaction == null) return;
+
+            if (Transactions.Contains(transaction))
             {
                 Transactions.Remove(transaction);
-                CalculateTotals();
                 TransactionService.SaveTransactions(Transactions);
+                CalculateTotals();
+
+                OnListChanged?.Invoke();
             }
         }
 
         public void CalculateTotals()
         {
-            TotalIncome = Transactions
-                .Where(t => t.Type == "Income")
-                .Sum(t => t.Amount);
+            TotalIncome = Transactions.Where(t => t.Type == "Income").Sum(t => t.Amount);
+            TotalExpense = Transactions.Where(t => t.Type == "Expense").Sum(t => t.Amount);
 
-            TotalExpense = Transactions
-                .Where(t => t.Type == "Expense")
-                .Sum(t => t.Amount);
+            OnPropertyChanged(nameof(TotalIncome));
+            OnPropertyChanged(nameof(TotalExpense));
         }
-
     }
 }

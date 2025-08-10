@@ -1,15 +1,7 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ByteinoFinance.ViewModels;
+﻿using ByteinoFinance.ViewModels;
 using ByteinoFinance.Views;
+using System.Windows;
+using System.Windows.Input;
 
 namespace ByteinoFinance
 {
@@ -20,30 +12,55 @@ namespace ByteinoFinance
     {
         private TransactionListView listView;
         private TransactionListViewModel listVm;
+        private MainViewModel mainVm;
+
         public MainWindow()
         {
             InitializeComponent();
-            listVm = new TransactionListViewModel();
+
+            mainVm = new MainViewModel();
+            this.DataContext = mainVm;
+
+            listVm = new TransactionListViewModel(mainVm.Transactions);
+            listVm.OnListChanged = () =>
+            {
+                mainVm.UpdateSummary();
+            };
+
+
             listView = new TransactionListView()
             {
                 DataContext = listVm
             };
+
             TransactionListControl.Content = listView;
         }
 
         private void OpenAddTransaction_Click(object sender, RoutedEventArgs e)
         {
             var addVm = new AddTransactionViewModel();
-            addVm.OnTransactionAdded = (newTx) =>
+            var addView = new AddTransactionView(addVm)
             {
-                listVm.Transactions.Add(newTx);
-                listVm.CalculateTotals();
-                ByteinoFinance.Services.TransactionService.SaveTransactions(listVm.Transactions);
+                Owner = this
             };
 
-            var addView = new AddTransactionView(addVm); 
-            addView.Owner = this;
+            addVm.OnTransactionAdded = (newTx) =>
+            {
+                if (newTx == null) return;
+
+                mainVm.Transactions.Add(newTx);
+                mainVm.UpdateSummary();
+
+                addView.DialogResult = true;
+                addView.Close();
+            };
+
             addView.ShowDialog();
+        }
+
+        private void AddTransactionButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenAddTransaction_Click(sender, e);
         }
     }
 }

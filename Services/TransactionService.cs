@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ByteinoFinance.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -6,29 +8,39 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ByteinoFinance.Models;
 
 namespace ByteinoFinance.Services
 {
     public static class TransactionService
     {
-
-        private static readonly string filePath = "transactions.json";
+        private static string FilePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "transactions.json");
 
         public static ObservableCollection<Transaction> LoadTransactions()
         {
-            if (!File.Exists(filePath))
+            try
+            {
+                if (!File.Exists(FilePath)) return new ObservableCollection<Transaction>();
+                var json = File.ReadAllText(FilePath);
+                var list = JsonConvert.DeserializeObject<List<Transaction>>(json) ?? new List<Transaction>();
+                return new ObservableCollection<Transaction>(list);
+            }
+            catch
+            {
                 return new ObservableCollection<Transaction>();
-
-            var json = File.ReadAllText(filePath);
-            return JsonSerializer.Deserialize<ObservableCollection<Transaction>>(json)
-                   ?? new ObservableCollection<Transaction>();
+            }
         }
 
-        public static void SaveTransactions(ObservableCollection<Transaction> transactions)
+        public static void SaveTransactions(IEnumerable<Transaction> transactions)
         {
-            var json = JsonSerializer.Serialize(transactions, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            try
+            {
+                var json = JsonConvert.SerializeObject(transactions, Formatting.Indented);
+                File.WriteAllText(FilePath, json);
+            }
+            catch
+            {
+                // ignore write errors for now or log
+            }
         }
     }
 }

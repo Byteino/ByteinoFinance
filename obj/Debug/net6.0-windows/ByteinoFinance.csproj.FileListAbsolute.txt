@@ -95,3 +95,4 @@ C:\Users\Chris\Desktop\Accounting\ByteinoFinance\ByteinoFinance\obj\Debug\net6.0
 C:\Users\Chris\Desktop\Accounting\ByteinoFinance\ByteinoFinance\obj\Debug\net6.0-windows\Views\📄 AddTransactionView.g.cs
 C:\Users\Chris\Desktop\Accounting\ByteinoFinance\ByteinoFinance\obj\Debug\net6.0-windows\Views\AddTransactionView.baml
 C:\Users\Chris\Desktop\Accounting\ByteinoFinance\ByteinoFinance\obj\Debug\net6.0-windows\Views\📄 AddTransactionView.baml
+C:\Users\Chris\Desktop\Accounting\ByteinoFinance\ByteinoFinance\obj\Debug\net6.0-windows\ByteinoFinance.sourcelink.json

@@ -24,29 +24,29 @@ namespace ByteinoFinance.Views
         {
             InitializeComponent();
         }
-
         private void OpenAddTransactionForm(object sender, RoutedEventArgs e)
         {
             var vm = (TransactionListViewModel)DataContext;
 
-            var addVm = new AddTransactionViewModel();
-            addVm.OnTransactionAdded = (newTx) =>
+            var addVm = new AddTransactionViewModel
             {
-                vm.Transactions.Add(newTx);
-                vm.CalculateTotals();
-                TransactionService.SaveTransactions(vm.Transactions);
+                ParentViewModel = vm
             };
+
+
+            var ownerWindow = Window.GetWindow(this);
+            if (ownerWindow?.DataContext is MainViewModel mainVm)
+            {
+                addVm.MainViewModel = mainVm;
+            }
 
             var addView = new AddTransactionView(addVm);
 
-            var ownerWindow = Window.GetWindow(this);
-            if (ownerWindow is MainWindow mainWindow)
-            {
-                addView.Owner = mainWindow;
-            }
+            if (ownerWindow != null)
+                addView.Owner = ownerWindow;
 
             addView.ShowDialog();
-
         }
+
     }
 }

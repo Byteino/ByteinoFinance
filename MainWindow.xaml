@@ -5,26 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ByteinoFinance.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#FFC8C8C8">
+        Title="ByteinoFinance" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7FA">
 
-    <Grid Margin="20">
+    <Window.Resources>
+        <Style x:Key="TotalIncome" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Green"/>
+        </Style>
+        <Style  x:Key="TotalExpense" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="DarkRed"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid Margin="12">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="Add Transaction" Width="150" Height="40" 
-                HorizontalAlignment="Left" 
-                Click="OpenAddTransaction_Click" >
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
-                </Style>
-            </Button.Resources>
-        </Button>
 
-       
-        <ContentControl x:Name="TransactionListControl" Grid.Row="1" />
 
+        <!-- Header: totals -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Margin="0,4">
+            <TextBlock Text="Total Income:" FontWeight="SemiBold" Style="{StaticResource TotalIncome}" Margin="0,0,6,0"/>
+            <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:C}}" Style="{StaticResource TotalIncome}" Margin="0,0,20,0"/>
+            <TextBlock Text="Total Expense:" FontWeight="SemiBold" Style="{StaticResource TotalExpense}" Margin="0,0,6,0"/>
+            <TextBlock Text="{Binding TotalExpense, StringFormat={}{0:C}}" Style="{StaticResource TotalExpense}" Margin="0,0,20,0"/>
+        </StackPanel>
+
+        <!-- Add button -->
+        <Button Content="Add Transaction" Width="140" Height="36" Grid.Row="1"
+                HorizontalAlignment="Left" Margin="0,8,0,8"
+                Click="OpenAddTransaction_Click"/>
+
+        <!-- Transaction list placeholder (UserControl inserted from code-behind) -->
+        <ContentControl x:Name="TransactionListControl" Grid.Row="2" />
     </Grid>
 </Window>

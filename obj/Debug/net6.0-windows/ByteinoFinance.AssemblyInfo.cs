@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ByteinoFinance")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9612c7ab9295b1034457afdc2a153e4be09c8aee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e967779b1c46a20f95bf719cbb7b50bd660dfd9")]
 [assembly: System.Reflection.AssemblyProductAttribute("ByteinoFinance")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ByteinoFinance")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
